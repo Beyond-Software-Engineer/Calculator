@@ -6,9 +6,10 @@ from Sys_admin.main.src.subtraction import Subtraction
 
 
 class ExerciseCollection:
-    def __init__(self,scale,restriction):
+    def __init__(self,scale,upper_restriction = 100,lower_restriction = 0):
         self.scale = scale
-        self.restriction = restriction
+        self.upper_restriction = upper_restriction
+        self.lower_restriction = lower_restriction
         self.exercise_collection = []
         self.result_set = []
 
@@ -20,13 +21,13 @@ class ExerciseCollection:
         while len(self.exercise_collection) < self.scale:
             choice = random.randint(0,1)
             if choice == 0:
-                equation = Addition()
+                equation = Addition(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
             elif choice == 1:
-                equation = Subtraction()
+                equation = Subtraction(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
             else:
                 print("没有对应的等式")
 
-            equation.generate_equation(self.restriction)
+            equation.generate_equation()
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
                     self.exercise_collection.append(equation)
@@ -43,8 +44,8 @@ class ExerciseCollection:
 
         while len(self.exercise_collection) < self.scale:
 
-            equation = Addition()
-            equation.generate_equation(self.restriction)
+            equation = Addition(upper_restriction= self.upper_restriction,lower_restriction= self.lower_restriction)
+            equation.generate_equation()
 
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
@@ -62,8 +63,8 @@ class ExerciseCollection:
 
         while len(self.exercise_collection) < self.scale:
 
-            equation = Subtraction()
-            equation.generate_equation(self.restriction)
+            equation = Subtraction(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
+            equation.generate_equation()
 
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
@@ -77,14 +78,17 @@ class ExerciseCollection:
             self.result_set.append(self.exercise_collection[i].calculate_result())
 
 
-    def output_exercise_collection(self):
+    def output_exercise_collection_to_string(self):
         for i in range(0,self.scale):
-            print(self.exercise_collection[i].output_equation())
+            self.exercise_collection[i].to_string()
 
+    def output_exercise_collection_as_string(self):
+        for i in range(0,self.scale):
+            self.exercise_collection[i].as_string()
 
     def output_result_set(self):
         for i in range(0,self.scale):
-            print(self.exercise_collection[i].output_equation() + f"{self.result_set[i]}")
+            self.exercise_collection[i].full_string()
 
 
     def dedupe_collection(self,equation):
