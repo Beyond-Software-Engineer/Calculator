@@ -1,4 +1,4 @@
-from Sys_admin.main.src.equation import Equation
+from .equation import Equation
 import random
 import sys
 

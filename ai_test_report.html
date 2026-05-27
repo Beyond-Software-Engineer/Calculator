@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI测试报告</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background-color: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; }
+        .test-item { margin-bottom: 25px; padding: 20px; border-radius: 8px; border-left: 4px solid; }
+        .test-item.passed { border-color: #28a745; background-color: #f8fff9; }
+        .test-item.failed { border-color: #dc3545; background-color: #fff5f5; }
+        .test-name { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .test-doc { color: #666; margin-bottom: 10px; font-style: italic; }
+        .test-meta { font-size: 14px; color: #888; margin-bottom: 15px; }
+        .status { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .status.passed { background-color: #28a745; color: white; }
+        .status.failed { background-color: #dc3545; color: white; }
+        .ai-analysis { background-color: #e9f5ff; padding: 20px; border-radius: 6px; margin-top: 15px; }
+        .ai-analysis h4 { margin-top: 0; color: #007bff; margin-bottom: 15px; }
+        .ai-analysis h5 { color: #333; margin: 12px 0 8px 0; }
+        .ai-analysis p { margin: 8px 0; line-height: 1.6; }
+        .ai-analysis ul, .ai-analysis ol { margin: 8px 0 8px 20px; padding-left: 15px; }
+        .ai-analysis li { margin: 4px 0; }
+        .ai-analysis code { background-color: #f4f4f4; padding: 2px 6px; border-radius: 3px; font-family: 'Consolas', 'Monaco', monospace; font-size: 14px; }
+        .ai-analysis pre { background-color: #f4f4f4; padding: 12px; border-radius: 6px; overflow-x: auto; margin: 10px 0; }
+        .ai-analysis pre code { padding: 0; background: none; }
+        .ai-analysis blockquote { border-left: 4px solid #007bff; padding-left: 12px; margin: 10px 0; color: #666; font-style: italic; }
+        .error-message { color: #dc3545; font-family: monospace; font-size: 14px; }
+        .summary { margin-bottom: 30px; padding: 20px; background-color: #f8f9fa; border-radius: 8px; }
+        .summary div { display: inline-block; margin-right: 30px; font-size: 16px; }
+        .summary span { font-weight: bold; }
+        .timestamp { text-align: center; color: #999; font-size: 14px; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI测试报告</h1>
+        
+        <div class="summary">
+            <div>总测试数: <span>5</span></div>
+            <div>通过: <span style="color: #28a745;">5</span></div>
+            <div>失败: <span style="color: #dc3545;">0</span></div>
+            <div>总时长: <span>0.02秒</span></div>
+        </div>
+        
+<div class="test-item passed">
+    <div class="test-name">
+        test_generate_addition_question
+        <span class="status passed">PASSED</span>
+    </div>
+    <div class="test-doc">📝 测试：生成 100 以内加法题目</div>
+    <div class="test-meta">
+        ⏱️ 执行时长: 0.01秒
+    </div>
+    
+    <div class="ai-analysis">
+        <h4>🧠 AI分析结果</h4>
+        <p>AI分析失败: Connection error.</p>
+    </div>
+</div>
+
+<div class="test-item passed">
+    <div class="test-name">
+        test_calculate_correct_answer
+        <span class="status passed">PASSED</span>
+    </div>
+    <div class="test-doc">📝 测试：计算加法答案正确</div>
+    <div class="test-meta">
+        ⏱️ 执行时长: 0.00秒
+    </div>
+    
+    <div class="ai-analysis">
+        <h4>🧠 AI分析结果</h4>
+        <p>AI分析失败: Connection error.</p>
+    </div>
+</div>
+
+<div class="test-item passed">
+    <div class="test-name">
+        test_check_user_answer[5-5-10-True]
+        <span class="status passed">PASSED</span>
+    </div>
+    <div class="test-doc">📝 测试：校验用户输入答案</div>
+    <div class="test-meta">
+        ⏱️ 执行时长: 0.00秒
+    </div>
+    
+    <div class="ai-analysis">
+        <h4>🧠 AI分析结果</h4>
+        <p>AI分析失败: Connection error.</p>
+    </div>
+</div>
+
+<div class="test-item passed">
+    <div class="test-name">
+        test_check_user_answer[3-3-6-True]
+        <span class="status passed">PASSED</span>
+    </div>
+    <div class="test-doc">📝 测试：校验用户输入答案</div>
+    <div class="test-meta">
+        ⏱️ 执行时长: 0.00秒
+    </div>
+    
+    <div class="ai-analysis">
+        <h4>🧠 AI分析结果</h4>
+        <p>AI分析失败: Connection error.</p>
+    </div>
+</div>
+
+<div class="test-item passed">
+    <div class="test-name">
+        test_check_user_answer[0-0-0-True]
+        <span class="status passed">PASSED</span>
+    </div>
+    <div class="test-doc">📝 测试：校验用户输入答案</div>
+    <div class="test-meta">
+        ⏱️ 执行时长: 0.00秒
+    </div>
+    
+    <div class="ai-analysis">
+        <h4>🧠 AI分析结果</h4>
+        <p>AI分析失败: Connection error.</p>
+    </div>
+</div>
+
+        <div class="timestamp">报告生成时间: 2026-05-13 21:17:45</div>
+    </div>
+</body>
+</html>

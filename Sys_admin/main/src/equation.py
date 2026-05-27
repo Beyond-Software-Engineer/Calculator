@@ -1,9 +1,9 @@
-from abc import abstractmethod
+from abc import ABC,abstractmethod
 from dataclasses import dataclass
 
-@dataclass
-class Equation:
-    def __init__(self,first_param = None,operator = None,second_param = None,upper_restriction = None,lower_restriction = None):
+
+class Equation(ABC):
+    def __init__(self,first_param = None,operator = None,second_param = None,upper_restriction = 0,lower_restriction = 100):
         self.first_param = first_param
         self.operator = operator
         self.second_param = second_param

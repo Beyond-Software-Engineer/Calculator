@@ -1,9 +1,9 @@
 import random
 from typing import List
 
-from Sys_admin.main.src.addition import Addition
-from Sys_admin.main.src.equation import Equation
-from Sys_admin.main.src.subtraction import Subtraction
+from .addition import Addition
+from .equation import Equation
+from .subtraction import Subtraction
 
 class Exercise:
     def __init__(self,scale = 0,upper_restriction = 100,lower_restriction = 0):
@@ -27,7 +27,7 @@ class Exercise:
             elif choice == 1:
                 equation:Equation = Subtraction(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
             else:
-                equation = Equation(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
+                pass
 
             equation.generate_equation()
             if equation.check_restriction():

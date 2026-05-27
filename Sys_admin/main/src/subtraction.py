@@ -1,7 +1,7 @@
 import random
 import sys
 
-from Sys_admin.main.src.equation import Equation
+from .equation import Equation
 
 
 class Subtraction(Equation):
