@@ -78,6 +78,7 @@ class ExerciseCollection:
             self.result_set.append(self.exercise_collection[i].calculate_result())
 
 
+
     def output_exercise_collection_to_string(self):
         for i in range(0,self.scale):
             self.exercise_collection[i].to_string()

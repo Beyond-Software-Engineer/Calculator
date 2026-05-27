@@ -1,9 +1,10 @@
 import random
-from typing import List
+from typing import List, Optional
 
-from .addition import Addition
-from .equation import Equation
-from .subtraction import Subtraction
+from Sys_admin.main.src.operation_base import OperationBase
+from Sys_admin.main.src.addition import Addition
+from Sys_admin.main.src.equation import Equation
+from Sys_admin.main.src.subtraction import Subtraction
 
 class Exercise:
     def __init__(self,scale = 0,upper_restriction = 100,lower_restriction = 0):
@@ -17,10 +18,10 @@ class Exercise:
         if scale is None:
             scale = self.scale
 
-        self.operations = []
-        self.results = []
+        operations = []
+        results = []
 
-        while len(self.operations) < scale:
+        while len(operations) < scale:
             choice = random.randint(0,1)
             if choice == 0:
                 equation:Equation = Addition(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
@@ -32,7 +33,7 @@ class Exercise:
             equation.generate_equation()
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
-                    self.operations.append(equation)
+                    operations.append(equation)
                 else:
                     pass
             else:
@@ -40,22 +41,27 @@ class Exercise:
 
 
         for i in range(0,scale):
-            self.results.append(self.operations[i].calculate_result())
+            results.append(self.operations[i].calculate_result())
+
+        self.operations = operations
+        self.results = results
+
+
 
     def generate_addition_exercise(self,scale = None):
         if scale is None:
             scale = self.scale
 
-        self.operations = []
-        self.results = []
+        operations = []
+        results = []
 
-        while len(self.operations) < scale:
+        while len(operations) < scale:
             equation:Equation = Addition(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
 
             equation.generate_equation()
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
-                    self.operations.append(equation)
+                    operations.append(equation)
                 else:
                     pass
             else:
@@ -63,22 +69,25 @@ class Exercise:
 
 
         for i in range(0,scale):
-            self.results.append(self.operations[i].calculate_result())
+            results.append(self.operations[i].calculate_result())
+
+        self.operations = operations
+        self.results = results
 
     def generate_substraction_exercise(self,scale = None):
         if scale is None:
             scale = self.scale
 
-        self.operations = []
-        self.results = []
+        operations = []
+        results = []
 
-        while len(self.operations) < scale:
+        while len(operations) < scale:
             equation:Equation = Subtraction(upper_restriction=self.upper_restriction,lower_restriction=self.lower_restriction)
 
             equation.generate_equation()
             if equation.check_restriction():
                 if self.dedupe_collection(equation):
-                    self.operations.append(equation)
+                    operations.append(equation)
                 else:
                     pass
             else:
@@ -86,8 +95,97 @@ class Exercise:
 
 
         for i in range(0,scale):
-            self.results.append(self.operations[i].calculate_result())
+            results.append(self.operations[i].calculate_result())
 
+        self.operations = operations
+        self.results = results
+
+    def generate_exercise(self,operation_base: OperationBase,scale = None):
+        if scale is None:
+            scale = self.scale
+
+        operations = []
+        results = []
+
+        while len(operations) < scale:
+            row = random.randint(self.lower_restriction,self.upper_restriction)
+            column = random.randint(self.lower_restriction,self.upper_restriction)
+            equation:Equation = operation_base.mixed_base[row][column]
+
+            if equation is None:
+                continue
+
+            if equation.check_restriction():
+                if self.dedupe_collection(equation):
+                    operations.append(equation)
+                else:
+                    pass
+            else:
+                pass
+
+        for i in range(0,scale):
+            results.append(operations[i].calculate_result())
+
+        self.operations = operations
+        self.results = results
+
+    def generate_addition_exercise(self,operation_base: OperationBase, scale=None):
+        if scale is None:
+            scale = self.scale
+
+        operations = []
+        results = []
+
+        while len(operations) < scale:
+            row = random.randint(self.lower_restriction, self.upper_restriction)
+            column = random.randint(self.lower_restriction, self.upper_restriction)
+            equation: Equation = operation_base.addition_base[row][column]
+
+            if equation is None:
+                continue
+
+            if equation.check_restriction():
+                if self.dedupe_collection(equation):
+                    operations.append(equation)
+                else:
+                    pass
+            else:
+                pass
+
+        for i in range(0, scale):
+            results.append(operations[i].calculate_result())
+
+        self.operations = operations
+        self.results = results
+
+    def generate_substraction_exercise(self,operation_base: OperationBase, scale=None):
+        if scale is None:
+            scale = self.scale
+
+        operations = []
+        results = []
+
+        while len(operations) < scale:
+            row = random.randint(self.lower_restriction, self.upper_restriction)
+            column = random.randint(self.lower_restriction, self.upper_restriction)
+            equation: Equation = operation_base.subtraction_base[row][column]
+
+            if equation is None:
+                continue
+
+            if equation.check_restriction():
+                if self.dedupe_collection(equation):
+                    operations.append(equation)
+                else:
+                    pass
+            else:
+                pass
+
+        for i in range(0, scale):
+            results.append(operations[i].calculate_result())
+
+        self.operations = operations
+        self.results = results
 
     def dedupe_collection(self, equation):
         scale = len(self.operations)
@@ -108,6 +206,13 @@ class Exercise:
         print("\n")
 
 if __name__ == "__main__":
+    # exercise = Exercise(100)
+    # exercise.generate_exercise(100)
+    # exercise.format_and_display(5)
+
+    ob = OperationBase(100)
+    ob.produce_mixed_base()
     exercise = Exercise(100)
-    exercise.generate_exercise(100)
+    exercise.generate_exercise(ob,100)
     exercise.format_and_display(5)
+
