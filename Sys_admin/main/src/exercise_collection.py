@@ -1,8 +1,8 @@
 import random
 
-from Sys_admin.main.src.addition import Addition
-from Sys_admin.main.src.equation import Equation
-from Sys_admin.main.src.subtraction import Subtraction
+from .addition import Addition
+from .equation import Equation
+from .subtraction import Subtraction
 
 
 class ExerciseCollection:
