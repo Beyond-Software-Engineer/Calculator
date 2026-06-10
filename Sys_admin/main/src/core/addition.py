@@ -1,6 +1,10 @@
-from .equation import Equation
-import random
+import os
 import sys
+import random
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from equation import Equation
 
 class Addition(Equation):
     def __init__(self, first_param = None, second_param = None,upper_restriction = 100,lower_restriction = 0):

@@ -1,8 +1,12 @@
 import random
+import os
+import sys
 
-from .addition import Addition
-from .equation import Equation
-from .subtraction import Subtraction
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from core.addition import Addition
+from core.equation import Equation
+from core.subtraction import Subtraction
 
 
 class ExerciseCollection:

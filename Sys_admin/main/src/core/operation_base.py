@@ -1,8 +1,12 @@
+import os
+import sys
 from typing import List, Optional
 
-from .addition import Addition
-from .equation import Equation
-from .subtraction import Subtraction
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from addition import Addition
+from equation import Equation
+from subtraction import Subtraction
 
 
 class OperationBase:
