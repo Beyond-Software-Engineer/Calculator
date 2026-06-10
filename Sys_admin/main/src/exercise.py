@@ -1,10 +1,10 @@
 import random
 from typing import List, Optional
 
-from Sys_admin.main.src.operation_base import OperationBase
-from Sys_admin.main.src.addition import Addition
-from Sys_admin.main.src.equation import Equation
-from Sys_admin.main.src.subtraction import Subtraction
+from .operation_base import OperationBase
+from .addition import Addition
+from .equation import Equation
+from .subtraction import Subtraction
 
 class Exercise:
     def __init__(self,scale = 0,upper_restriction = 100,lower_restriction = 0):
