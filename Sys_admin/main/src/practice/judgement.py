@@ -104,7 +104,68 @@ class Judgement:
                 f.write(f"得分：{score}\n")
             
             print(f"批改结果已保存到文件: {result_filename}")
+            
+            # 自动存储到数据库
+            self._save_to_database(result_filename, practice_file, total, self.correct, self.wrong, score)
+            
             return True
         except Exception as e:
             print(f"写入文件时发生错误: {e}")
             return False
+    
+    def _save_to_database(self, result_filename, practice_file, total, correct, wrong, score):
+        """自动存储批改结果到数据库
+        
+        Args:
+            result_filename: 批改结果文件名
+            practice_file: 练习文件名
+            total: 总题数
+            correct: 正确数
+            wrong: 错误数
+            score: 得分
+        """
+        try:
+            from database.db_manager import db_manager
+            
+            # 获取对应的练习记录ID
+            practice_name = os.path.basename(practice_file)
+            practice = db_manager.get_practice_results_by_exercise(0)  # 需要根据实际逻辑获取
+            
+            # 查找练习记录
+            practices = db_manager.execute_query(
+                "SELECT id FROM practice_results WHERE filename LIKE %s",
+                (f"%{practice_name.split('_')[-1]}%",)
+            )
+            
+            if practices:
+                practice_id = practices[0]['id']
+            else:
+                print(f"[自动存储] 未找到对应的练习记录: {practice_name}")
+                practice_id = 0
+            
+            # 读取文件内容
+            with open(result_filename, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # 插入数据库
+            result_id = db_manager.insert_checking_result(
+                practice_id=practice_id,
+                filename=os.path.basename(result_filename),
+                total_count=total,
+                correct_count=correct,
+                wrong_count=wrong,
+                score=score,
+                content=content,
+                file_path=result_filename
+            )
+            
+            if result_id > 0:
+                print(f"[自动存储] 批改结果已保存到数据库: {result_filename} (ID: {result_id})")
+                return result_id
+            else:
+                print(f"[自动存储] 批改结果保存失败: {result_filename}")
+                return 0
+                
+        except Exception as e:
+            print(f"[自动存储] 批改结果保存异常: {result_filename} - {e}")
+            return 0

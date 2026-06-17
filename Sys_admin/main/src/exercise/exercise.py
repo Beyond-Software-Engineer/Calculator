@@ -213,8 +213,9 @@ class Exercise:
     def write_csv_addition_exercise(self, count, file_index=1):
         output_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice"
         os.makedirs(output_dir, exist_ok=True)
-        filename = os.path.join(output_dir, f"addition_exercise_{count}_{file_index:03d}.csv")
+        filename = os.path.join(output_dir, f"addition_exercise_{count}_{file_index}.csv")
         equations = []
+        answers = []
         
         ob = OperationBase(self.upper_restriction)
         ob.produce_addition_base()
@@ -224,6 +225,7 @@ class Exercise:
         
         for eq in temp_exercise.operations:
             equations.append(eq.to_string().strip())
+            answers.append(str(eq.calculate_result()))
         
         with open(filename, 'w', encoding='utf-8') as f:
             columns = 5
@@ -232,12 +234,30 @@ class Exercise:
                 f.write(line + '\n')
         
         print(f"加法习题已保存到文件: {filename}")
+        
+        # 自动存储到数据库
+        self._save_to_database(filename, 'addition', count, str(file_index))
+        
+        # 自动生成对应的答案文件
+        answer_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice_answer"
+        os.makedirs(answer_dir, exist_ok=True)
+        answer_filename = os.path.join(answer_dir, f"addition_exercise_{count}_{file_index}.csv")
+        with open(answer_filename, 'w', encoding='utf-8') as f:
+            columns = 5
+            for i in range(0, len(answers), columns):
+                line = ','.join(answers[i:i+columns])
+                f.write(line + '\n')
+        print(f"加法答案已保存到文件: {answer_filename}")
+        
+        # 自动存储答案文件到数据库
+        self._save_answer_to_database(answer_filename, filename, answers)
 
     def write_csv_subtraction_exercise(self, count, file_index=1):
         output_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice"
         os.makedirs(output_dir, exist_ok=True)
-        filename = os.path.join(output_dir, f"subtraction_exercise_{count}_{file_index:03d}.csv")
+        filename = os.path.join(output_dir, f"subtraction_exercise_{count}_{file_index}.csv")
         equations = []
+        answers = []
         
         ob = OperationBase(self.upper_restriction)
         ob.produce_subtraction_base()
@@ -247,6 +267,7 @@ class Exercise:
         
         for eq in temp_exercise.operations:
             equations.append(eq.to_string().strip())
+            answers.append(str(eq.calculate_result()))
         
         with open(filename, 'w', encoding='utf-8') as f:
             columns = 5
@@ -255,12 +276,30 @@ class Exercise:
                 f.write(line + '\n')
         
         print(f"减法习题已保存到文件: {filename}")
+        
+        # 自动存储到数据库
+        self._save_to_database(filename, 'subtraction', count, str(file_index))
+        
+        # 自动生成对应的答案文件
+        answer_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice_answer"
+        os.makedirs(answer_dir, exist_ok=True)
+        answer_filename = os.path.join(answer_dir, f"subtraction_exercise_{count}_{file_index}.csv")
+        with open(answer_filename, 'w', encoding='utf-8') as f:
+            columns = 5
+            for i in range(0, len(answers), columns):
+                line = ','.join(answers[i:i+columns])
+                f.write(line + '\n')
+        print(f"减法答案已保存到文件: {answer_filename}")
+        
+        # 自动存储答案文件到数据库
+        self._save_answer_to_database(answer_filename, filename, answers)
 
     def write_csv_mixed_exercise(self, count, file_index=1):
         output_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice"
         os.makedirs(output_dir, exist_ok=True)
-        filename = os.path.join(output_dir, f"mixed_exercise_{count}_{file_index:03d}.csv")
+        filename = os.path.join(output_dir, f"mixed_exercise_{count}_{file_index}.csv")
         equations = []
+        answers = []
         
         ob = OperationBase(self.upper_restriction)
         ob.produce_mixed_base()
@@ -270,6 +309,7 @@ class Exercise:
         
         for eq in temp_exercise.operations:
             equations.append(eq.to_string().strip())
+            answers.append(str(eq.calculate_result()))
         
         with open(filename, 'w', encoding='utf-8') as f:
             columns = 5
@@ -278,6 +318,23 @@ class Exercise:
                 f.write(line + '\n')
         
         print(f"混合习题已保存到文件: {filename}")
+        
+        # 自动存储到数据库
+        self._save_to_database(filename, 'mixed', count, str(file_index))
+        
+        # 自动生成对应的答案文件
+        answer_dir = r"e:\Desktop\Engineering\Experiment\Instance\Sys_admin\main\Practices_OL\practice_answer"
+        os.makedirs(answer_dir, exist_ok=True)
+        answer_filename = os.path.join(answer_dir, f"mixed_exercise_{count}_{file_index}.csv")
+        with open(answer_filename, 'w', encoding='utf-8') as f:
+            columns = 5
+            for i in range(0, len(answers), columns):
+                line = ','.join(answers[i:i+columns])
+                f.write(line + '\n')
+        print(f"混合答案已保存到文件: {answer_filename}")
+        
+        # 自动存储答案文件到数据库
+        self._save_answer_to_database(answer_filename, filename, answers)
 
     def read_csv_addition_exercise(self, csv_file):
         if not os.path.exists(csv_file):
@@ -389,6 +446,94 @@ class Exercise:
     def write_csv_mixed_exercises(self, number, count):
         for i in range(1, number + 1):
             self.write_csv_mixed_exercise(count, i)
+    
+    def _save_to_database(self, filename, file_type, question_count, file_suffix):
+        """自动存储练习文件到数据库
+        
+        Args:
+            filename: 文件名
+            file_type: 习题类型 ('addition', 'subtraction', 'mixed')
+            question_count: 题目数量
+            file_suffix: 文件序号
+        """
+        try:
+            from database.db_manager import db_manager
+            
+            # 读取文件内容
+            with open(filename, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # 插入数据库
+            file_id = db_manager.insert_exercise_file(
+                filename=os.path.basename(filename),
+                file_type=file_type,
+                question_count=question_count,
+                file_suffix=file_suffix,
+                content=content,
+                file_path=filename
+            )
+            
+            if file_id > 0:
+                print(f"[自动存储] 习题文件已保存到数据库: {filename} (ID: {file_id})")
+                return file_id
+            else:
+                print(f"[自动存储] 习题文件保存失败: {filename}")
+                return 0
+                
+        except Exception as e:
+            print(f"[自动存储] 习题文件保存异常: {filename} - {e}")
+            return 0
+    
+    def _save_answer_to_database(self, answer_filename, exercise_filename, answers):
+        """自动存储答案文件到数据库
+        
+        Args:
+            answer_filename: 答案文件名
+            exercise_filename: 对应的练习文件名
+            answers: 答案列表
+        """
+        try:
+            from database.db_manager import db_manager
+            
+            # 获取对应的练习文件ID
+            exercise = db_manager.get_exercise_by_filename(os.path.basename(exercise_filename))
+            if not exercise:
+                print(f"[自动存储] 未找到对应的练习文件: {exercise_filename}")
+                # 创建练习记录
+                file_type = 'mixed'
+                if 'addition' in exercise_filename:
+                    file_type = 'addition'
+                elif 'subtraction' in exercise_filename:
+                    file_type = 'subtraction'
+                    
+                exercise_id = self._save_to_database(exercise_filename, file_type, len(answers), 'auto')
+                if exercise_id == 0:
+                    return 0
+            else:
+                exercise_id = exercise['id']
+            
+            # 读取答案文件内容
+            with open(answer_filename, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # 插入数据库
+            answer_id = db_manager.insert_answer_file(
+                exercise_id=exercise_id,
+                filename=os.path.basename(answer_filename),
+                content=content,
+                file_path=answer_filename
+            )
+            
+            if answer_id > 0:
+                print(f"[自动存储] 答案文件已保存到数据库: {answer_filename} (ID: {answer_id})")
+                return answer_id
+            else:
+                print(f"[自动存储] 答案文件保存失败: {answer_filename}")
+                return 0
+                
+        except Exception as e:
+            print(f"[自动存储] 答案文件保存异常: {answer_filename} - {e}")
+            return 0
 
 
 if __name__ == "__main__":
